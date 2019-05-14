@@ -3,6 +3,7 @@ let bodyParser = require('body-parser');
 let morgan = require('morgan');
 let pg = require('pg');
 const PORT = 3000;
+const uuidv4 = require('uuid/v4');
 
 let pool = new pg.Pool({
     port: 5432,
@@ -31,19 +32,21 @@ app.use(function(request, response, next) {
 app.post('/api/new-user', function(request, response) {
 var User_Name = request.body.User_Name;
 var User_Level = request.body.User_Level;
+var User_Uuid = uuidv4();
 
  pool.connect((err, db, done) =>{
      if(err)
      {return response.status(400).send(err);}
      else
      {
-         db.query('INSERT INTO TestUsers (UName, ULevel) VALUES ($1,$2)',[User_Name, User_Level], (err, table)=>{
+         db.query('INSERT INTO TestUsers (UName, ULevel, Uuid) VALUES ($1,$2,$3)',[User_Name, User_Level, User_Uuid], (err, table)=>{
              if(err) {
                  return response.status(400).send(err);
              }
              else
              {
                  console.log("Data Inserted");
+                // console.log("UUID is: " + uuidv1());
                  db.end();
 		 response.status(201).send({message:"Data Inserted!"});
              }

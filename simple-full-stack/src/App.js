@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import './App.css';
 
 class App extends Component {
+
+ 
+
   constructor() {  
       super();
       this.state = {
@@ -42,7 +45,16 @@ fetch(request)
 .then(function(response){
   response.json()
   .then(function(data) {
-    console.log(data)
+
+    console.log(data);
+  
+    if(data.code == "23505")
+    {
+      alert("Name already exists, please enter a different name. (Error 400: Bad Request)");
+    }
+   
+
+
     let users = that.state.users;
   //  users.concat(data);
     that.setState({
@@ -52,7 +64,7 @@ fetch(request)
   })
 })
 .catch(function(err) {
-  console.log(err)
+  console.log(err);
 })
 }
 
